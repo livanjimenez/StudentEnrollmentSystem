@@ -9,7 +9,6 @@ public class Test {
     }
 
     public Test() {
-        Student sd = new Student();
-        System.out.println(sd);
+        
     }
 }
