@@ -118,4 +118,29 @@ public class Test {
             }
         }
     }
+
+    static void display(String s, String heading, int message_type) {
+        JTextArea text = new JTextArea(s, 20, 30);
+        JScrollPane pane = new JScrollPane(text);
+        JOptionPane.showMessageDialog(null, text, heading, message_type);
+    }
+
+    static void addCourse(Courses crse) {
+        boolean addAnotherCourse = true;
+        while (addAnotherCourse) {
+            int enter = GetData.getInt("Do you want to add course?\n1. Yes\n2. No");
+            switch (enter) {
+            case 1:
+                String course = GetData.getWord("Enter name of course");
+                if (!(crse.addcourses(course))) {
+                    JOptionPane.showMessageDialog(null, "Can't add any more course Cousre Limit Reached");
+                    addAnotherCourse = false;
+                }
+                break;
+            case 2:
+                addAnotherCourse = false;
+                break;
+            }
+        }
+    }
 }
