@@ -1,3 +1,4 @@
+import java.text.DateFormat;
 import java.util.*;
 
 public class Student {
@@ -5,13 +6,16 @@ public class Student {
     private Address address;
     private String id_number;
     private Courses courses;
-    private Date date;
+    private String date;
 
-    public Student(Name name, Address address, String id_number, Courses courses, Date date) {
+    private DateFormat df = DateFormat.getDateInstance();
+
+    public Student(Name name, Address address, String id_number, Courses courses) {
         this.name = name;
         this.address = address;
         this.id_number = id_number;
         this.courses = courses;
+        date = df.format(new Date());
     }
 
     public Name getName() {
@@ -30,7 +34,7 @@ public class Student {
         return courses;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
