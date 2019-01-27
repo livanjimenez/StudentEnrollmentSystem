@@ -65,6 +65,7 @@ public class Test {
             case 3:
                 id_number = GetData.getWord("Enter student ID: ");
                 enrolledStudent.search(id_number);
+                
                 if (!enrolledStudent.getLocation()) {
                     JOptionPane.showMessageDialog(null, "ID NOT FOUND!");
                 } else {
@@ -76,6 +77,7 @@ public class Test {
             case 4:
                 id_number = GetData.getWord("Enter the Student ID number");
                 enrolledStudent.search(id_number);
+
                 if (enrolledStudent.getLocation()) {
                     Student idStudent = enrolledStudent.getStudent();
                     String course = GetData.getWord("Enter course you want to drop");
