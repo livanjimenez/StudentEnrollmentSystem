@@ -12,6 +12,10 @@ public class Admissions {
         list = new ArrayList<Student>();
     }
 
+    public ArrayList<Student> getList() {
+        return list;
+    }
+
     public Student getStudent() {
         return student;
     }
@@ -32,7 +36,7 @@ public class Admissions {
         list.add(student);
     }
 
-    public void removeStudent(Student student) {
+    public void removeStudent(int student) {
         list.remove(student);
     }
 

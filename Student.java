@@ -54,6 +54,10 @@ public class Student {
         this.courses = courses;
     }
 
+    public boolean removeCourse(String course) {
+        return courses.removeCourse(course);
+    }
+
     public String toString() {
         return "Id number: " + id_number + "\n" + name + "\n" + 
             address + "\n" + "Date: " + date + "\n" + "Courses: \n" + getCourses();

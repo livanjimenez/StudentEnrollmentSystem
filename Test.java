@@ -1,5 +1,8 @@
 import java.util.*;
 import java.text.DateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Livan Jimenez 5540344
@@ -46,75 +49,102 @@ public class Test {
                 break;
             case 2:
                 String idNumber = GetData.getWord("Enter Student ID number");
-                currentlyEnrolled.search(idNumber);
-                if (currentlyEnrolled.inList()) {
-                    Student st = currentlyEnrolled.getstudent();
-                    dropStudent.addStudent(st);
-                    int index = currentlyEnrolled.getindex();
-                    currentlyEnrolled.removeStudent(index);
-                    JOptionPane.showMessageDialog(null, "The Student has Sucessfully removed");
+                enrolledStudent.search(idNumber);
+
+                if (enrolledStudent.getLocation()) {
+                    Student st = enrolledStudent.getStudent();
+                    droppedStudent.addStudent(st);
+
+                    int index = enrolledStudent.getIndex();
+                    enrolledStudent.removeStudent(index);
+
+                    JOptionPane.showMessageDialog(null, "The Student has been sucessfully removed");
                 } else {
                     JOptionPane.showMessageDialog(null, "Student is not Registered");
                 }
+
                 break;
             case 3:
-                id = GetData.getWord("Enter the Student ID number");
-                currentlyEnrolled.search(id);
-                if (!currentlyEnrolled.inList()) {
-                    JOptionPane.showMessageDialog(null, "Id not found");
+                id_number = GetData.getWord("Enter student ID: ");
+                enrolledStudent.search(id_number);
+                if (!enrolledStudent.getLocation()) {
+                    JOptionPane.showMessageDialog(null, "ID NOT FOUND!");
                 } else {
-                    Courses crose = new Courses();
-                    Student newStudent = currentlyEnrolled.getstudent();
-                    addCourse(newStudent.courses);
+                    Courses initCourses = new Courses();
+                    Student initStudent = enrolledStudent.getStudent();
+                    addCourse(initStudent.getCourses());
                 }
+
                 break;
             case 4:
-                id = GetData.getWord("Enter the Student ID number");
-                currentlyEnrolled.search(id);
-                if (currentlyEnrolled.inList()) {
-                    Student st = currentlyEnrolled.getstudent();
+                id_number = GetData.getWord("Enter the Student ID number");
+                enrolledStudent.search(id_number);
+                if (enrolledStudent.getLocation()) {
+                    Student st = enrolledStudent.getStudent();
                     String course = GetData.getWord("Enter course you want to drop");
-                    if (st.dropcourses(course)) {
-                        int index = currentlyEnrolled.getindex();
-                        st = currentlyEnrolled.getstudent();
+                    if (st.removeCourse(course)) {
+                        int index = enrolledStudent.getIndex();
+                        st = enrolledStudent.getStudent();
                         JOptionPane.showMessageDialog(null, "The Course has been successfully deleted");
                     } else
                         JOptionPane.showMessageDialog(null, "You are not registered for thr Course");
                 }
                 break;
             case 5:
-                int view = GetData.getInt("What information would youlike to view?\n1.Currently Enrolled Students\n"
-                        + "2.Dropped Students");
+                int view = GetData.getInt(
+                        "Choose between optioins 1 & 2:\n1.Currently Enrolled Students\n" + "2.Dropped Students");
+
                 switch (view) {
-                case 1:// view currently Enrolled Students
-                    ArrayList list = currentlyEnrolled.getList();
+                case 1:
+                    ArrayList<Student> list = enrolledStudent.getList();
                     if (list.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "List is Empty");
                     } else {
-                        int i = 0, length = currentlyEnrolled.size();
-                        String st = "";
+                        int i = 0, length = enrolledStudent.getList().size();
+                        String string = "";
                         String course = "";
                         while (i < length) {
-                            Student stud = (Student) list.get(i);
-                            st = st + "ID Number:\t" + stud.getidno() + "\nName\t:" + stud.getname().getfirstName()
-                                    + " " + stud.getname().getlastName() + "\n" + "\nAddress:\t"
-                                    + stud.getaddress().getstreet() + "\n\t" + stud.getaddress().getcity() + " "
-                                    + stud.getaddress().getstate() + "," + stud.getaddress().getzipcode() + "\nDate:\t"
-                                    + stud.getDate() + "\nCourses:\t";
+                            Student student2 = (Student) list.get(i);
+                            string += "ID Number:\t" + student2.getIdNumber() + "\nName\t:"
+                                    + student2.getName().getFirstName() + " " + student2.getName().getLastName() + "\n"
+                                    + "\nAddress:\t" + student2.getAddress().getStreet() + "\n\t"
+                                    + student2.getAddress().getCity() + " " + student2.getAddress().getState() + ","
+                                    + student2.getAddress().getZipCode() + "\nDate:\t" + student2.getDate()
+                                    + "\nCourses:\t";
                             i++;
-                            ArrayList courseList = stud.getCourses();
+                            ArrayList<Student> courseList = student2.getCourses();
 
                             for (int j = 0; j < courseList.size(); j++) {
                                 course = course + courseList.get(j) + " ";
                             }
-                            display(st + course, "Currently Enrolled", JOptionPane.INFORMATION_MESSAGE);
+                            display(string + course, "Student(s) enrolled:", JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
                     break;
-                case 6:
-                    break;
-                default:
+
+                case 2:
+                    ArrayList droplist = dropStudent.getList();
+                    String course = "";
+                    if (droplist.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "List is Empty");
+                    } else {
+                        int i = 0, length = droplist.size();
+                        String tr = "";
+                        while (i < length) {
+                            Student c = (Student) droplist.get(i);
+                            tr = tr + "ID Number:\t" + c.getidno() + "\nName\t:" + c.getname().getfirstName() + " "
+                                    + c.getname().getlastName() + "\n" + "\nAddress:\t" + c.getaddress().getstreet()
+                                    + "\n\t" + c.getaddress().getcity() + " " + c.getaddress().getstate() + ","
+                                    + c.getaddress().getzipcode() + "\nDate:\t" + c.getDate();
+                            i++;
+                        }
+                        display(tr, "Dropped Students", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
+                
+            case 6:
+                break;
+            default:
             }
         }
     }
@@ -132,7 +162,7 @@ public class Test {
             switch (enter) {
             case 1:
                 String course = GetData.getWord("Enter name of course");
-                if (!(crse.addcourses(course))) {
+                if (!(crse.addCourse(course))) {
                     JOptionPane.showMessageDialog(null, "Can't add any more course Cousre Limit Reached");
                     addAnotherCourse = false;
                 }
