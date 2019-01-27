@@ -6,6 +6,10 @@ public class Courses {
     public ArrayList<String> getNumOfCourses() {
         return num_of_courses;
     }
+
+    public ArrayList<String> getCourses() {
+        return num_of_courses;
+    }
     
     public boolean addCourse(String courseName) {
         num_of_courses.add(courseName);

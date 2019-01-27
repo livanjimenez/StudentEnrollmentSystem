@@ -18,6 +18,10 @@ public class Student {
         date = df.format(new Date());
     }
 
+    public ArrayList<String> getCourseList() {
+        return courses.getCourses();
+    }
+
     public Name getName() {
         return name;
     }

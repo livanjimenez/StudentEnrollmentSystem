@@ -1,7 +1,5 @@
 import java.util.*;
-import java.text.DateFormat;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
@@ -16,10 +14,10 @@ public class Test {
     public Test() {
         Admissions enrolledStudent = new Admissions();
         Admissions droppedStudent = new Admissions();
-        DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
-        Date date = new Date();
 
-        while (true) {
+        boolean start = false;
+
+        while (!start) {
             int optionMenu = GetData.getInt("\tFIU - Florida International University Student Registration Program\n"
                     + "\n" + "Enter a number to choose which option you'll like to take:" + "\n1.Enroll Student"
                     + "\n2.Drop Student" + "\n3.Add Course" + "\n4.Drop Course" + "\n5.Display current Information"
@@ -70,7 +68,6 @@ public class Test {
                 if (!enrolledStudent.getLocation()) {
                     JOptionPane.showMessageDialog(null, "ID NOT FOUND!");
                 } else {
-                    Courses initCourses = new Courses();
                     Student initStudent = enrolledStudent.getStudent();
                     addCourse(initStudent.getCourses());
                 }
@@ -80,14 +77,13 @@ public class Test {
                 id_number = GetData.getWord("Enter the Student ID number");
                 enrolledStudent.search(id_number);
                 if (enrolledStudent.getLocation()) {
-                    Student st = enrolledStudent.getStudent();
+                    Student idStudent = enrolledStudent.getStudent();
                     String course = GetData.getWord("Enter course you want to drop");
-                    if (st.removeCourse(course)) {
-                        int index = enrolledStudent.getIndex();
-                        st = enrolledStudent.getStudent();
-                        JOptionPane.showMessageDialog(null, "The Course has been successfully deleted");
+                    if (idStudent.removeCourse(course)) {
+                        idStudent = enrolledStudent.getStudent();
+                        JOptionPane.showMessageDialog(null, "The Course has been successfully deleted.");
                     } else
-                        JOptionPane.showMessageDialog(null, "You are not registered for thr Course");
+                        JOptionPane.showMessageDialog(null, "Not registered for the course listed.");
                 }
                 break;
             case 5:
@@ -96,15 +92,17 @@ public class Test {
 
                 switch (view) {
                 case 1:
-                    ArrayList<Student> list = enrolledStudent.getList();
-                    if (list.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "List is Empty");
+                    ArrayList<Student> enrolledList = enrolledStudent.getList();
+                    if (enrolledList.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "null");
                     } else {
                         int i = 0, length = enrolledStudent.getList().size();
+
                         String string = "";
                         String course = "";
+
                         while (i < length) {
-                            Student student2 = (Student) list.get(i);
+                            Student student2 = (Student) enrolledList.get(i);
                             string += "ID Number:\t" + student2.getIdNumber() + "\nName\t:"
                                     + student2.getName().getFirstName() + " " + student2.getName().getLastName() + "\n"
                                     + "\nAddress:\t" + student2.getAddress().getStreet() + "\n\t"
@@ -112,63 +110,69 @@ public class Test {
                                     + student2.getAddress().getZipCode() + "\nDate:\t" + student2.getDate()
                                     + "\nCourses:\t";
                             i++;
-                            ArrayList<Student> courseList = student2.getCourses();
+
+                            ArrayList<String> courseList = student2.getCourseList();
 
                             for (int j = 0; j < courseList.size(); j++) {
                                 course = course + courseList.get(j) + " ";
                             }
-                            display(string + course, "Student(s) enrolled:", JOptionPane.INFORMATION_MESSAGE);
+                            displayWindow(string + course, "Student(s) enrolled:", JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
                     break;
 
                 case 2:
-                    ArrayList droplist = dropStudent.getList();
-                    String course = "";
-                    if (droplist.isEmpty()) {
+                    ArrayList<Student> droppedList = droppedStudent.getList();
+
+                    if (droppedList.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "List is Empty");
                     } else {
-                        int i = 0, length = droplist.size();
-                        String tr = "";
+                        int i = 0, length = droppedList.size();
+                        String txt = "";
+
                         while (i < length) {
-                            Student c = (Student) droplist.get(i);
-                            tr = tr + "ID Number:\t" + c.getidno() + "\nName\t:" + c.getname().getfirstName() + " "
-                                    + c.getname().getlastName() + "\n" + "\nAddress:\t" + c.getaddress().getstreet()
-                                    + "\n\t" + c.getaddress().getcity() + " " + c.getaddress().getstate() + ","
-                                    + c.getaddress().getzipcode() + "\nDate:\t" + c.getDate();
+                            Student student3 = (Student) droppedList.get(i);
+                            txt += "ID Number:\t" + student3.getIdNumber() + "\nName\t:"
+                                    + student3.getName().getFirstName() + " " + student3.getName().getLastName() + "\n"
+                                    + "\nAddress:\t" + student3.getAddress().getStreet() + "\n\t"
+                                    + student3.getAddress().getCity() + " " + student3.getAddress().getState() + ","
+                                    + student3.getAddress().getZipCode() + "\nDate:\t" + student3.getDate();
                             i++;
                         }
-                        display(tr, "Dropped Students", JOptionPane.INFORMATION_MESSAGE);
+                        displayWindow(txt, "Dropped Students:", JOptionPane.INFORMATION_MESSAGE);
                     }
+                    break;
                 }
-                
+
             case 6:
+                start = true;
                 break;
             default:
             }
         }
     }
 
-    static void display(String s, String heading, int message_type) {
+    static void displayWindow(String s, String heading, int message_type) {
         JTextArea text = new JTextArea(s, 20, 30);
-        JScrollPane pane = new JScrollPane(text);
         JOptionPane.showMessageDialog(null, text, heading, message_type);
     }
 
-    static void addCourse(Courses crse) {
-        boolean addAnotherCourse = true;
-        while (addAnotherCourse) {
-            int enter = GetData.getInt("Do you want to add course?\n1. Yes\n2. No");
+    static void addCourse(Courses courses) {
+        boolean adder = true;
+        while (adder) {
+            int enter = GetData.getInt("Do you want to add course?\n1.Yes\n2.No");
+
             switch (enter) {
             case 1:
                 String course = GetData.getWord("Enter name of course");
-                if (!(crse.addCourse(course))) {
+
+                if (!(courses.addCourse(course))) {
                     JOptionPane.showMessageDialog(null, "Can't add any more course Cousre Limit Reached");
-                    addAnotherCourse = false;
+                    adder = false;
                 }
                 break;
             case 2:
-                addAnotherCourse = false;
+                adder = false;
                 break;
             }
         }
