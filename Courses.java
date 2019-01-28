@@ -14,7 +14,9 @@ public class Courses {
     public boolean addCourse(String courseName) {
         num_of_courses.add(courseName);
         
-        if (num_of_courses.size() >= 5) {
+        int courseLimit = 5;
+
+        if (num_of_courses.size() >= courseLimit) {
             return false;
         }
 

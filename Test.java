@@ -118,7 +118,7 @@ public class Test {
                 break;
             case 5:
                 int view = GetData.getInt(
-                        "Choose between optioins 1 & 2:\n1.Currently Enrolled Students\n" + "2.Dropped Students");
+                        "Choose between the options 1 & 2:\n1.Currently Enrolled Students\n" + "2.Dropped Students");
 
                 switch (view) {
                 case 1:
