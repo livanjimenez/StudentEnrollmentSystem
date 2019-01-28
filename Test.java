@@ -11,6 +11,32 @@ public class Test {
         new Test();
     }
 
+    public void displayWindow(String str, String txtString, int JInfoMsg) {
+        JTextArea text = new JTextArea(str, 20, 30);
+        JOptionPane.showMessageDialog(null, text, txtString, JInfoMsg);
+    }
+
+    public void addCourse(Courses courses) {
+        boolean adder = true;
+        while (adder) {
+            int newMenu = GetData.getInt("Do you want to add course?\n1.Yes\n2.No");
+
+            switch (newMenu) {
+            case 1:
+                String course = GetData.getWord("Enter name of course");
+
+                if (!(courses.addCourse(course))) {
+                    JOptionPane.showMessageDialog(null, "Can't add any more course Cousre Limit Reached");
+                    adder = false;
+                }
+                break;
+            case 2:
+                adder = false;
+                break;
+            }
+        }
+    }
+
     public Test() {
         Admissions enrolledStudent = new Admissions();
         Admissions droppedStudent = new Admissions();
@@ -18,12 +44,12 @@ public class Test {
         boolean start = false;
 
         while (!start) {
-            int optionMenu = GetData.getInt("\tFIU - Florida International University Student Registration Program\n"
+            int mainMenu = GetData.getInt("\tFIU - Florida International University Student Registration Program\n"
                     + "\n" + "Enter a number to choose which option you'll like to take:" + "\n1.Enroll Student"
                     + "\n2.Drop Student" + "\n3.Add Course" + "\n4.Drop Course" + "\n5.Display current Information"
                     + "\n6.Exit");
 
-            switch (optionMenu) {
+            switch (mainMenu) {
             case 1:
                 String firstName = GetData.getWord("Enter first name: ");
                 String lastName = GetData.getWord("Enter last name: ");
@@ -40,7 +66,8 @@ public class Test {
 
                 Courses courses = new Courses();
                 courses.addCourse(courseString);
-                Student student = new Student(name, address, id_number, courses);
+                Date newDate = new Date();
+                Student student = new Student(name, address, id_number, courses, newDate);
 
                 enrolledStudent.addStudent(student);
 
@@ -65,7 +92,7 @@ public class Test {
             case 3:
                 id_number = GetData.getWord("Enter student ID: ");
                 enrolledStudent.search(id_number);
-                
+
                 if (!enrolledStudent.getLocation()) {
                     JOptionPane.showMessageDialog(null, "ID NOT FOUND!");
                 } else {
@@ -81,6 +108,7 @@ public class Test {
                 if (enrolledStudent.getLocation()) {
                     Student idStudent = enrolledStudent.getStudent();
                     String course = GetData.getWord("Enter course you want to drop");
+
                     if (idStudent.removeCourse(course)) {
                         idStudent = enrolledStudent.getStudent();
                         JOptionPane.showMessageDialog(null, "The Course has been successfully deleted.");
@@ -150,32 +178,6 @@ public class Test {
                 start = true;
                 break;
             default:
-            }
-        }
-    }
-
-    static void displayWindow(String s, String heading, int message_type) {
-        JTextArea text = new JTextArea(s, 20, 30);
-        JOptionPane.showMessageDialog(null, text, heading, message_type);
-    }
-
-    static void addCourse(Courses courses) {
-        boolean adder = true;
-        while (adder) {
-            int enter = GetData.getInt("Do you want to add course?\n1.Yes\n2.No");
-
-            switch (enter) {
-            case 1:
-                String course = GetData.getWord("Enter name of course");
-
-                if (!(courses.addCourse(course))) {
-                    JOptionPane.showMessageDialog(null, "Can't add any more course Cousre Limit Reached");
-                    adder = false;
-                }
-                break;
-            case 2:
-                adder = false;
-                break;
             }
         }
     }

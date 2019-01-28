@@ -7,15 +7,17 @@ public class Student {
     private String id_number;
     private Courses courses;
     private String date;
+    private Date newDate;
 
     private DateFormat df = DateFormat.getDateInstance();
 
-    public Student(Name name, Address address, String id_number, Courses courses) {
+    public Student(Name name, Address address, String id_number, Courses courses, Date newDate) {
         this.name = name;
         this.address = address;
         this.id_number = id_number;
         this.courses = courses;
         date = df.format(new Date());
+        this.newDate = newDate;
     }
 
     public ArrayList<String> getCourseList() {
@@ -56,6 +58,10 @@ public class Student {
 
     public void setCourses(Courses courses) {
         this.courses = courses;
+    }
+
+    public boolean addCourses(String course) {
+        return courses.addCourse(course);
     }
 
     public boolean removeCourse(String course) {
