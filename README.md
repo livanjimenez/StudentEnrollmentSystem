@@ -1,2 +1,2 @@
 # StudentEnrollmentSystem
-#### School assignment to practice inheritence while creating an enrollment system.
+#### School assignment to practice inheritance while creating an enrollment system.
